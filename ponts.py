@@ -46,7 +46,7 @@ def find_binary_code(low, high):
             return value
     return None
 
-s = "зантариякристинадамеевна"
+s = "зантариякристинаамеевна"
 
 probabilities = calculate_probabilities(s)
 
@@ -62,4 +62,37 @@ number = int(input_string)
 binary_representation = bin(number)[2:]
 
 print("Двоичное представление:", '0' + binary_representation)
+
+def calculate_parity_bits(data):
+    n = len(data)
+    r = 0
+    while (2**r) < (n + r + 1):
+        r += 1
+
+    hamming_code = [''] * (n + r)
+
+    j = 0
+    for i in range(1, n + r + 1):
+        if (i & (i - 1)) != 0:
+            hamming_code[i - 1] = data[j]
+            j += 1
+
+    for i in range(r):
+        parity_bit_position = 2**i
+        parity_value = 0
+
+        for j in range(1, n + r + 1):
+            if j & parity_bit_position:
+                if hamming_code[j - 1] != '':
+                    parity_value ^= int(hamming_code[j - 1])
+
+        hamming_code[parity_bit_position - 1] = str(parity_value)
+
+    return ''.join(hamming_code)
+
+input_string = "01100001101000110011110110101011110111110001110111110011111100010010100011011101011"
+
+hamming_code = calculate_parity_bits(input_string)
+
+print("Код Хэмминга для строки:", hamming_code)
 
